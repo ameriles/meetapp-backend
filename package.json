@@ -12,5 +12,14 @@
     "body-parser": "^1.13.2",
     "express": "^4.13.1",
     "mongoose": "^4.0.6"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ameriles/meetapp-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ameriles/meetapp-backend/issues"
+  },
+  "homepage": "https://github.com/ameriles/meetapp-backend#readme"
 }
