@@ -13,6 +13,7 @@ var UserSchema = new mongoose.Schema({
     birthday: String,
     nickname: String,
     imageUri: String,
+    lastMeeting: Date,
     createdAt: {
         type: Date,
         default: Date.now
