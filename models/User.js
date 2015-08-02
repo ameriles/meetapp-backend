@@ -9,6 +9,10 @@ var UserSchema = new mongoose.Schema({
     // can be empty. Used as a meetapp user id if no other identity provider is provided
     password: String,
     // can be empty
+    gender: String,
+    birthday: String,
+    nickname: String,
+    imageUri: String,
     createdAt: {
         type: Date,
         default: Date.now
