@@ -60,4 +60,25 @@ router.delete('/:id', function(req, res, next) {
     });
 });
 
+// get user by facebookId
+router.get('/facebook/:id', function(req, res, next) {
+    User.find({
+        facebookId: req.params.id
+    }, function(err, users) {
+        if (err) return next(err);
+
+        res.json(users);
+    });
+});
+
+router.get('/googleplus/:id', function(req, res, next) {
+    User.find({
+        googlePlusId: req.params.id
+    }, function(err, users) {
+        if (err) return next(err);
+
+        res.json(users);
+    });
+});
+
 module.exports = router;

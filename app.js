@@ -8,9 +8,9 @@ var port = process.env.PORT || 3000;
 
 mongoose.connect('mongodb://localhost/meetapp-db', function(err) {
     if (err) {
-        console.log('connection error', err);
+        console.log('MongoDB connection error', err);
     } else {
-        console.log('connection successful');
+        console.log('MongoDB connection successful');
     }
 });
 
