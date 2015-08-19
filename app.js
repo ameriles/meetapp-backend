@@ -1,10 +1,13 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'); 
 
-var app = express();
+var app = express(); 
 
-var port = process.env.PORT || 3000;
+// For socket.io 
+var http = require('http').Server(app); 
+var io = require('socket.io')(http); 
+var port = process.env.PORT || 3000; 
 
 mongoose.connect('mongodb://localhost/meetapp-db', function(err) {
     if (err) {
@@ -14,14 +17,35 @@ mongoose.connect('mongodb://localhost/meetapp-db', function(err) {
     }
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
+app.use(bodyParser.json()); app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-var users = require('./routes/users');
+var users = require('./routes/users'); 
 app.use('/users', users);
 
-var server = app.listen(port, function() {
+var clients = [];
+// Event fired every time a new client connects:
+io.on('connection', function (socket) {
+    console.info('New client connected (id=' + socket.id + ').');
+    clients.push(socket);
+
+    socket.on('callout', function(msg) {
+        console.info(msg + ' is calling...');
+        var randomClient = Math.floor(Math.random() * clients.length);
+        clients[randomClient].emit('callin', 'Hi, mother "faker"!');
+    });
+
+    // When socket disconnects, remove it from the list:
+    socket.on('disconnect', function () {
+        var index = clients.indexOf(socket);
+        if (index != -1) {
+            clients.splice(index, 1);
+            console.info('Client gone (id=' + socket.id + ').');
+        }
+    });
+});
+
+http.listen(port, function() {
     console.log('MeetApp ready, running, and listening on port: ' + port);
 });
