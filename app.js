@@ -17,12 +17,17 @@ mongoose.connect('mongodb://localhost/meetapp-db', function(err) {
     }
 });
 
-app.use(bodyParser.json()); app.use(bodyParser.urlencoded({
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({
     extended: true
 }));
 
 var users = require('./routes/users'); 
 app.use('/users', users);
+
+app.get('/', function(req, res) {
+    res.sendfile('./static_html/index.html');
+});
 
 var clients = [];
 // Event fired every time a new client connects:
@@ -31,9 +36,12 @@ io.on('connection', function (socket) {
     clients.push(socket);
 
     socket.on('callout', function(msg) {
-        console.info(msg + ' is calling...');
-        var randomClient = Math.floor(Math.random() * clients.length);
-        clients[randomClient].emit('callin', 'Hi, mother "faker"!');
+        console.info(msg.to + ' is calling...');
+        console.info('Message: ' + msg.m);
+        
+        //var randomClient = Math.floor(Math.random() * clients.length);
+        //clients[randomClient].emit('callin', 'Hi, mother "faker"!');
+        io.to(msg.to).emit('callin', msg.m);
     });
 
     // When socket disconnects, remove it from the list:

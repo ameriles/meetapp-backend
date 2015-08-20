@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <title>MeetApp send callout!</title>
+  </head>
+  <body>
+    <form action="">
+      <input id="to" placeholder="to" /><br/>
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+  </body>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  <script>
+    var socket = io();
+    $('form').submit(function(){
+      var msg = {
+        to: $('#to').val(),
+        m: $('#m').val()
+      };
+      socket.emit('callout', msg);
+      $('#m').val('');
+     
+      return false;
+    });
+  </script>
+</html>
