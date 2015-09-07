@@ -64,7 +64,7 @@ router.delete('/:id', function(req, res, next) {
 router.get('/facebook/:id', function(req, res, next) {
 	User.find({
 		facebookId: req.params.id
-	}).populate('contacts')
+	}).populate('contacts', '_id firstName middleName lastName nickname')
 	.exec(function (err, users) {
 		if (err) return next(err);
 		
@@ -76,7 +76,7 @@ router.get('/facebook/:id', function(req, res, next) {
 router.get('/googleplus/:id', function(req, res, next) {
 	User.find({
 		googlePlusId: req.params.id
-	}).populate('contacts')
+	}).populate('contacts', '_id firstName middleName lastName nickname')
 	.exec(function (err, users) {
 		if (err) return next(err);
 		
