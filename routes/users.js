@@ -60,25 +60,28 @@ router.delete('/:id', function(req, res, next) {
     });
 });
 
-// get user by facebookId
+// get user by facebookId & contacts
 router.get('/facebook/:id', function(req, res, next) {
-    User.find({
-        facebookId: req.params.id
-    }, function(err, users) {
-        if (err) return next(err);
-
-        res.json(users);
-    });
+	User.find({
+		facebookId: req.params.id
+	}).populate('contacts')
+	.exec(function (err, users) {
+		if (err) return next(err);
+		
+		res.json(users);
+	});
 });
 
+// get user by googlePlusId & contacts
 router.get('/googleplus/:id', function(req, res, next) {
-    User.find({
-        googlePlusId: req.params.id
-    }, function(err, users) {
-        if (err) return next(err);
-
-        res.json(users);
-    });
+	User.find({
+		googlePlusId: req.params.id
+	}).populate('contacts')
+	.exec(function (err, users) {
+		if (err) return next(err);
+		
+		res.json(users);
+	});
 });
 
 module.exports = router;

@@ -21,7 +21,9 @@ var UserSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: Date.now
-    }
+    },
+	// array of ObjectIds
+	contacts: { type: Schema.Types.ObjectId, ref: 'User' }
 }, {
     collection: 'users'
 });
