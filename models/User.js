@@ -23,7 +23,7 @@ var UserSchema = new mongoose.Schema({
         default: Date.now
     },
 	// array of ObjectIds
-	contacts: { type: Schema.Types.ObjectId, ref: 'User' }
+	contacts: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }, {
     collection: 'users'
 });
