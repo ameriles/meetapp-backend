@@ -6,6 +6,8 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/User.js');
 
+var contactFields = '_id firstName middleName lastName nickname';
+
 // list
 router.get('/', function(req, res, next) {
     User.find(function(err, users) {
@@ -20,14 +22,14 @@ router.get('/', function(req, res, next) {
 
 // get by id
 router.get('/:id', function(req, res, next) {
-    User.findById(req.params.id, function(err, user) {
-        if (err) {
-            console.log('Error');
-            return next(err);
-        }
-
-        res.json(user);
-    });
+    User.find({
+		_id: req.params.id
+	}).populate('contacts', contactFields)
+	.exec(function (err, users) {
+		if (err) return next(err);
+		
+		res.json(users);
+	});
 });
 
 // create
@@ -52,6 +54,7 @@ router.put('/:id', function(req, res, next) {
 });
 
 // delete
+/*
 router.delete('/:id', function(req, res, next) {
     User.findByIdAndRemove(req.params.id, function(err, user) {
         if (err) return next(err);
@@ -59,12 +62,13 @@ router.delete('/:id', function(req, res, next) {
         res.json(user);
     });
 });
+*/
 
 // get user by facebookId & contacts
 router.get('/facebook/:id', function(req, res, next) {
 	User.find({
 		facebookId: req.params.id
-	}).populate('contacts', '_id firstName middleName lastName nickname')
+	}).populate('contacts', contactFields)
 	.exec(function (err, users) {
 		if (err) return next(err);
 		
@@ -76,7 +80,7 @@ router.get('/facebook/:id', function(req, res, next) {
 router.get('/googleplus/:id', function(req, res, next) {
 	User.find({
 		googlePlusId: req.params.id
-	}).populate('contacts', '_id firstName middleName lastName nickname')
+	}).populate('contacts', contactFields)
 	.exec(function (err, users) {
 		if (err) return next(err);
 		
